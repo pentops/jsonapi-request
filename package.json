@@ -1,0 +1,42 @@
+{
+  "name": "@pentops/jsonapi-request",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "pnpm run clean && rollup -c rollup.config.js",
+    "publish": "pnpm run build && npm publish",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "keywords": [],
+  "author": "Joshua Slate",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.11.16",
+    "@types/qs": "^6.9.11",
+    "@types/uuid": "^9.0.8",
+    "rollup": "^4.9.6",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "qs": "^6.11.2",
+    "uuid": "^9.0.1"
+  },
+  "peerDependencies": {
+    "uuid": "^9.0.1"
+  },
+  "peerDependenciesMeta": {
+    "uuid": {
+      "optional": true
+    }
+  }
+}
