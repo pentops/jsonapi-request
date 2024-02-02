@@ -1,5 +1,5 @@
 # jsonapi-request
-A TypeScript fetch wrapper for making requests to a [jsonapi](https://github.com/pentops/jsonapi) projects.
+A TypeScript fetch wrapper for making requests to [jsonapi](https://github.com/pentops/jsonapi) projects.
 
 Basic use example:
 
