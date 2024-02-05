@@ -63,7 +63,21 @@ function prepareParameters(params: any | undefined): any {
 }
 
 export function buildSearchString(params: any | undefined): string {
-  return stringify(prepareParameters(params), { addQueryPrefix: true, arrayFormat: 'comma', allowDots: true, skipNulls: true });
+  const preparedParams = prepareParameters(params);
+  if (!preparedParams) {
+    return '';
+  }
+
+  // Convert objects to JSON strings that jsonapi can parse
+  if (typeof preparedParams === 'object') {
+    Object.keys(preparedParams).forEach((key) => {
+      if (typeof preparedParams[key] === 'object' && !(preparedParams[key] instanceof Date)) {
+        preparedParams[key] = JSON.stringify(preparedParams[key]);
+      }
+    });
+  }
+
+  return stringify(preparedParams, { addQueryPrefix: true, arrayFormat: 'repeat', allowDots: true, skipNulls: true });
 }
 
 export function buildMergedRequestInit<TReq extends unknown = undefined>(
