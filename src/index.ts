@@ -27,7 +27,7 @@ export interface TypedRequestInit<TReqBody extends unknown> extends Omit<Request
 }
 
 function prepareParameters(params: any | undefined): any {
-  if (!params || params === '' || params === undefined || params === null) {
+  if (params === '' || params === undefined || params === null) {
     return null;
   }
 
