@@ -17,7 +17,7 @@
   "author": "Joshua Slate",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.14.11",
     "@types/qs": "^6.9.15",
