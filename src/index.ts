@@ -1,26 +1,8 @@
 import { stringify } from 'qs';
+import { v4 as uuid } from 'uuid';
 import { APIError } from './error';
 
 export { APIError };
-
-let uuid: typeof import('uuid').v4 | undefined;
-
-async function loadUUID() {
-  try {
-    if (uuid) {
-      return uuid;
-    }
-
-    const uuidModule = await import('uuid');
-    uuid = uuidModule.v4;
-
-    return uuid;
-  } catch {}
-}
-
-(async function() {
-  await loadUUID();
-}());
 
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -172,11 +154,7 @@ export async function makeRequest<TRes, TReqBody extends unknown = undefined>(
   request?: TypedRequestInit<TReqBody>,
 ): Promise<TRes | undefined> {
   const { body, headers, ...requestInit } = request || {};
-  let traceId: string = '';
-
-  if (uuid) {
-    traceId = uuid();
-  }
+  const traceId = uuid();
 
   const requestOptions: RequestInit = {
     method,
