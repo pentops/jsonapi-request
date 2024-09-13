@@ -10,7 +10,7 @@ export class APIError extends Error {
 
     super(message);
 
-    this.name = this.constructor.name;
+    this.name = 'APIError';
     this.status = status;
     this.requestIdentifier = requestIdentifier;
     this.traceId = traceId;

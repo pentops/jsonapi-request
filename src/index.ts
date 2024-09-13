@@ -5,9 +5,22 @@ export { APIError };
 
 let uuid: typeof import('uuid').v4 | undefined;
 
-try {
-  uuid = require('uuid').v4;
-} catch {}
+async function loadUUID() {
+  try {
+    if (uuid) {
+      return uuid;
+    }
+
+    const uuidModule = await import('uuid');
+    uuid = uuidModule.v4;
+
+    return uuid;
+  } catch {}
+}
+
+(async function() {
+  await loadUUID();
+}());
 
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -17,6 +30,9 @@ async function processResponse<TRes>(rawResponse: Response): Promise<TRes> {
       return (await rawResponse.json()) as Promise<TRes>;
     case 'application/pdf':
       return (await rawResponse.blob()) as unknown as Promise<TRes>;
+    case 'multipart/form-data':
+    case 'application/x-www-form-urlencoded':
+      return (await rawResponse.formData()) as unknown as Promise<TRes>;
     default:
       return (await rawResponse.text()) as unknown as Promise<TRes>;
   }
@@ -188,4 +204,13 @@ export async function makeRequest<TRes, TReqBody extends unknown = undefined>(
   }
 
   return responseBody;
+}
+
+export function makeCancellableRequest<TRes, TReqBody extends unknown = undefined>(
+  method: HTTPMethod,
+  path: string,
+  request?: TypedRequestInit<TReqBody>,
+): [Promise<TRes | undefined>, AbortController] {
+  const controller = new AbortController();
+  return [makeRequest(method, path, { ...request, signal: controller.signal } as TypedRequestInit<TReqBody>), controller];
 }
